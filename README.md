@@ -3,7 +3,7 @@
 ### Description
 This application provides an extensive dashboard for the user to create posts and view other user's posts. Further user can draft a post, and schedule a post according to their needs. 
 
-Watch the working video of the application [here]().
+Watch the working video of the application [here](https://youtu.be/8RAi6r0Eh9Q).
 
 ### Installation
 To Simply use the system, Clone this repository using ```git clone https://github.com/OsafAliSayed/Socialize.git```
