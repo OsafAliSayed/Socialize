@@ -1,0 +1,7 @@
+venv
+
+socialize/social/__pycache__/
+socialize/socialize/__pycache__/
+socialize/social/migrations/__pycache__/
+
+socialize/db.sqlite3

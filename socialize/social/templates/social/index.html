@@ -1,0 +1,32 @@
+{% extends 'social/layout.html' %}
+
+{% block body %}
+<div class="row">
+    <div class="col-12 d-flex justify-content-center align-items-center flex-column mt-3">
+        {% if user.is_authenticated %}
+        {% for post in posts %}
+        {% if not post.is_draft %}
+        <div class="card col-6 border border-dark mb-3" style="max-width: 540px;">
+            <div class="row g-0">
+                <div class="col-md-4 d-flex justify-content-center align-items-center">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ post.user.username }}</h5>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <p class="card-text">{{ post.content }}</p>
+                        <p class="card-text"><small class="text-muted">{{ post.timestamp }}</small></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        {% endfor %}
+        {% else %}
+        <h1 class="text-center">Welcome to Socialize</h1>
+        <a href="{% url 'login'%}"> Please sign in here to continue.</a>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends 'social/layout.html' %}
+
+{% block title %}
+    Create Post
+{% endblock %}
+
+{% block body %}
+<div class="row d-flex flex-column justify-content-center align-items-center">
+    <div class="col-12 d-flex flex-column justify-content-center align-items-center">
+        <h2>Create Post</h2>
+    </div>
+    <div class="col-12 d-flex flex-column justify-content-center align-items-center">
+        <!-- make bootstrap form that take text content as input and has a submit button -->
+        <form action="{% url 'create_post' %}" method="POST" class="col-6 border border-secondary p-3">
+            {% csrf_token %}
+            <div class="form-group">
+                <textarea class="form-control border border-secondary" id="content" name="content" rows="3" placeholder="Add post content here"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary" id="draft" name="submit">Submit</button>
+            <button type="submit" class="btn btn-danger" id="draft" name="draft">Draft</button>
+            <!-- <button type="submit" class="btn btn-primary">Schedule</button> -->
+        </form>
+    </div>
+</div>
+{% endblock %}
