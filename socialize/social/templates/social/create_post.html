@@ -14,7 +14,13 @@
         <form action="{% url 'create_post' %}" method="POST" class="col-6 border border-secondary p-3">
             {% csrf_token %}
             <div class="form-group">
+                {% if post %}
+                <!-- hidden data to take id -->
+                <input type="hidden" id="id" name="id" value="{{ post.id }}">
+                <textarea class="form-control border border-secondary" id="content" name="content" rows="3" placeholder="Add post content here">{{ post.content }}</textarea>
+                {% else %}
                 <textarea class="form-control border border-secondary" id="content" name="content" rows="3" placeholder="Add post content here"></textarea>
+                {% endif %}
                 <!-- take datetime input for post scheduling -->
                 <input type="datetime-local" class="form-control" id="datetime" name="datetime" placeholder="Schedule post">
             </div>

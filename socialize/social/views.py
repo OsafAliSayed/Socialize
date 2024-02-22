@@ -8,10 +8,15 @@ from django.shortcuts import render
 from django.urls import reverse
 from .models import *
 
+from django.utils import timezone
+from bs4 import BeautifulSoup
 def index(request):
+    
     if request.user.is_authenticated:
         # load all posts from all users. Sort by timestamp
-        posts = Post.objects.all().order_by("-timestamp")
+        # check if published date is passed
+        posts = Post.objects.all()
+        posts = posts.filter(published__lte=timezone.now())
         return render(request, "social/index.html", {
             "posts" : posts,
             "user" : request.user
@@ -22,7 +27,6 @@ def index(request):
     
 def login_view(request):
     if request.method == "POST":
-
         # Attempt to sign user in
         username = request.POST["username"]
         password = request.POST["password"]
@@ -76,16 +80,28 @@ def create_post(request):
         # if user clicked submit button
         if "submit" in request.POST:
             content = request.POST["content"]
-            post = Post(user=request.user, content=content)
-            if request.POST["datetime"]:
-                print("datetime found")
-                datetime = request.POST["datetime"]
-                post.published = datetime
+            # check if post is from draft 
+            
+            if "id" in request.POST:
+                post = Post.objects.get(id=request.POST["id"])
+                post.content = content
+                post.is_draft = False
+                if request.POST["datetime"]:
+                    post.published = request.POST["datetime"]
+                else:
+                    post.published = timezone.now()
+
                 post.save()
-            post.save()
+            else:
+                post = Post(user=request.user, content=content)
+                if request.POST["datetime"]:
+                    datetime = request.POST["datetime"]
+                    post.published = datetime
+                    post.save()
+                post.save()
         
         if "draft" in request.POST:
-            print("draft clicked")
+
             content = request.POST["content"]
             post = Post(user=request.user, content=content, is_draft=True)
             post.save() 
@@ -101,19 +117,18 @@ def drafts(request):
     })
     
 def edit_post(request, id):
-    pass
-    # post = Post.objects.get(id=id)
-    # if request.method == "POST":
-    #     content = request.POST["content"]
-    #     post.content = content
-    #     post.save()
-    #     return HttpResponseRedirect(reverse("index"))
-    # else:
-    #     return render(request, "social/edit_post.html", {
-    #         "post" : post
-    #     })
+    return render(request, "social/create_post.html", {
+        "post" : Post.objects.get(id=id)
+    })
     
 def delete_post(request, id):
     post = Post.objects.get(id=id)
     post.delete()
     return HttpResponseRedirect(reverse("index"))
+
+def scheduled_post(request):
+    posts = Post.objects.filter(user=request.user)
+    posts = posts.filter(published__gt=timezone.now())
+    return render(request, "social/scheduled_post.html", {
+        "drafts" : posts
+    })
