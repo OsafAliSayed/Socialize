@@ -77,6 +77,11 @@ def create_post(request):
         if "submit" in request.POST:
             content = request.POST["content"]
             post = Post(user=request.user, content=content)
+            if request.POST["datetime"]:
+                print("datetime found")
+                datetime = request.POST["datetime"]
+                post.published = datetime
+                post.save()
             post.save()
         
         if "draft" in request.POST:

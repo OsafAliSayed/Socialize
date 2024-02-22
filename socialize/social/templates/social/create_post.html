@@ -15,6 +15,8 @@
             {% csrf_token %}
             <div class="form-group">
                 <textarea class="form-control border border-secondary" id="content" name="content" rows="3" placeholder="Add post content here"></textarea>
+                <!-- take datetime input for post scheduling -->
+                <input type="datetime-local" class="form-control" id="datetime" name="datetime" placeholder="Schedule post">
             </div>
             <button type="submit" class="btn btn-primary" id="draft" name="submit">Submit</button>
             <button type="submit" class="btn btn-danger" id="draft" name="draft">Draft</button>
